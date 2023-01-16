@@ -1,20 +1,31 @@
 import sys
+input = sys.stdin.readline
 
-n, m = map(int, input().split())
-num_list = list(map(int, sys.stdin.readline().rstrip().split()))
+N, M = map(int ,input().split())
+nums = list(map(int, input().split()))
 
-remainder_info = [0 for _ in range(m)]
-remainder_info[0] = 1
+# 구간합 배열
+part_sum = [0] * N
 
-total = 0
-for i in range(n):
-    total += num_list[i]
-    r = total % m
-    # 나머지 값에 따라서 idx 정보 저장
-    remainder_info[r] += 1
+# 구간합 세팅
+part_sum[0] = nums[0]
+for i in range(1, N):
+    part_sum[i] = part_sum[i-1] + nums[i]
+    
+# 나머지 개수 배열
+remainders = [0] * M
 
-count = 0
-for i in remainder_info:
-    count += i*(i - 1) // 2
+# 각 구간합 별 3으로 나눈 나머지
+for i in range(N):
+    remainder = part_sum[i] % M
+    remainders[remainder] += 1
+    
+# 그 자체로 0인 경우의 수 더하기
+result = 0
+result += remainders[0]
 
-print(count)
+# 경우의 수 구해서 더하기
+for i in range(M):
+    result += remainders[i] * (remainders[i]-1) // 2
+    
+print(result)
