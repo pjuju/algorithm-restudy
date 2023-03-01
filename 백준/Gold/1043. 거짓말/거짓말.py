@@ -1,30 +1,41 @@
-N,M = map(int, input().split())
-truth = list(map(int, input().split()))
-check_people = [0] * (N+1)
-parties = [list(map(int, input().split()))[1:] for _ in range(M)]
-check_parties = [0] * (M+1)
-queue = truth[1:]
+import sys
+input = sys.stdin.readline
 
-result = M
+N, M = map(int, input().split())
+knows = list(map(int, input().split()))[1:]
+parents = [i for i in range(N+1)]
+parties = []
 
-for person in queue:
-    check_people[person] = 1
+def union(a,b):
+    x = find(a)
+    y = find(b)
+    if x != y:
+        parents[y] = x
 
-while queue:
-    person = queue.pop()
-    for i in range(M):
-        if not check_parties[i]:
-            if person in parties[i]:
-                result -= 1
-                check_parties[i] = 1
-                for other_person in parties[i]:
-                    if not check_people[other_person]:
-                        check_people[other_person] = 1
-                        queue.append(other_person)
+def find(x):
+    if parents[x] == x:
+        return x
+
+    parents[x] = find(parents[x])
+    return parents[x]
+
+result = 0
+for _ in range(M):
+    party = list(map(int, input().split()))[1:]
+    parties.append(party)
+
+for party in parties:
+    first = party[0]
+    for i in range(1,len(party)):
+        union(first,party[i])
+
+for party in parties:
+    first = party[0]
+    repre = find(first)
+    for x in knows:
+        if find(x) == repre:
+            break
+    else:
+        result += 1
 
 print(result)
-
-
-
-
-
