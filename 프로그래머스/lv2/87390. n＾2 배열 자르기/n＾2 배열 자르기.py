@@ -1,8 +1,6 @@
 def solution(n, left, right):
-    result = []
-    for i in range(left+1, right+2):
-        if i % n == 0:
-            result.append(n)
-        else:
-            result.append(max((i//n)+1,i%n))
-    return result
+    answer = []
+    arr = [i for i in range(1,n+1)] * (n+1)
+    print(arr)
+    
+    return answer
