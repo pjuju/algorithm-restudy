@@ -10,11 +10,10 @@ for _ in range(N):
 
 room = [0]
 while hq:
-    s,e = heapq.heappop(hq)
-    
+    s,e = heapq.heappop(hq)    
     min_time = heapq.heappop(room)
-    heapq.heappush(room,e)
 
+    heapq.heappush(room,e)
     if s < min_time:
         heapq.heappush(room,min_time)
     
