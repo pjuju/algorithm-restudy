@@ -1,18 +1,22 @@
 def solution(sequence, k):
-    answer = []
-    n = len(sequence)
-    limit_sum, end = 0,0
     
-    for i in range(len(sequence)):
-        while limit_sum < k and end < n:
-            limit_sum += sequence[end]
-            end +=1
-            
-        if limit_sum == k:
-            answer.append([i, end-1, end-1-i])
-        
-        limit_sum-= sequence[i]
-        
-    answer = sorted(answer, key=lambda x: x[2])
+    result_left, result_right = 0,len(sequence)    
+    left = 0
     
-    return answer[0][:2]
+    val = 0
+    
+    for right in range(len(sequence)):
+        val += sequence[right]
+        while val > k and left < right:
+            val -= sequence[left]
+            left += 1
+        if val == k:
+            if result_right - result_left > right - left:
+                result_left, result_right = left, right
+    
+    
+    
+    
+    
+    
+    return [result_left, result_right]
