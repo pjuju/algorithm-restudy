@@ -1,66 +1,45 @@
-import sys
-input = sys.stdin.readline
 from collections import deque
-
-def give(x,y,to):
-    y = x+y
-    x = 0
-    if y > to:
-        x += (y-to)
-        y = to
-    return x,y
-
-
+visited = [[0]*(201) for _ in range(201)]
 A,B,C = map(int, input().split())
-queue = deque()
-queue.append((0,0,C))
+dq = deque()
+dq.append((0,0,C))
 result = []
-check = [(0,0,C)]
-while queue:
-    a,b,c = queue.popleft()    
-    if a == 0:
-        result.append(c)    
-    # a
+while dq:
+    a,b,c = dq.popleft()
+    if visited[a][b]:
+        continue
+    visited[a][b] = 1
+    # print(a,b,c)
     if a:
-        # b로
-        a1,b1 = give(a,b,B)
-        if (a1,b1,c) not in check:
-            check.append((a1,b1,c))
-            queue.append((a1,b1,c))        
-        # c로
-        a2,c2 = give(a,c,C)
-        if (a2,b,c2) not in check:
-            check.append((a2,b,c2))
-            queue.append((a2,b,c2))        
+        if a+b > B:            
+            dq.append((a+b-B,B,c))
+        else:
+            dq.append((0,a+b,c))
+        if a+c > C:
+            dq.append((a+c-C,b,C))
+        else:
+            dq.append((0,b,a+c))
+    else:                
+        result.append(c)
+        
     if b:
-        # a로
-        b3,a3 = give(b,a,A)
-        if (a3,b3,c) not in check:
-            check.append((a3,b3,c))
-            queue.append((a3,b3,c))        
-        # c로
-        b4,c4 = give(b,c,C)
-        if (a,b4,c4) not in check:
-            check.append((a,b4,c4))
-            queue.append((a,b4,c4))
+        if b+a > A:            
+            dq.append((A,a+b-A,c))
+        else:
+            dq.append((a+b,0,c))
+        if b+c > C:
+            dq.append((a,b+c-C,C))
+        else:
+            dq.append((a,0,b+c))
+    
     if c:
-        # a로
-        c5,a5 = give(c,a,A)
-        if (a5,b,c5) not in check:
-            check.append((a5,b,c5))
-            queue.append((a5,b,c5))        
-        # b로
-        c6,b6 = give(c,b,B)
-        if (a,b6,c6) not in check:
-            check.append((a,b6,c6))
-            queue.append((a,b6,c6))
+        if c+a > A:            
+            dq.append((A,b,c+a-A))
+        else:
+            dq.append((a+c,b,0))
+        if c+b > B:
+            dq.append((a,B,b+c-B))
+        else:
+            dq.append((a,b+c,0))
+            
 print(*sorted(result))
-    
-        
-        
-        
-
-
-
-    
-
