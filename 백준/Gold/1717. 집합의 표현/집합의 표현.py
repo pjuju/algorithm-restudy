@@ -2,33 +2,28 @@ import sys
 input = sys.stdin.readline
 
 n, m = map(int, input().split())
+parents = [i for i in range(n+1)]
 
-# n+1개의 집합 {0}, {1}, {2}, ,,, , {n}
-# 합집합 연산과, 두 원소가 같은 집합에 포함되어 있는지를 확인하는 연산 수행
-def union(x,y):    
-    a = find(x) 
-    b = find(y)
-    belongs[b] = a
+def union(a,b):
+    pa, pb = find(a), find(b)
+    parents[pb] = parents[pa]
+    
 
-def find(x):
-    if x == belongs[x]:
-        return belongs[x]
+def find(a):
+    if parents[a] == a:
+        return a
     
-    if x != belongs[x]:
-        belongs[x] = find(belongs[x])
-        return belongs[x]
-    
-belongs = [x for x in range(n+1)]
+    parents[a] = find(parents[a])
+    return parents[a]
+
+
+
 for _ in range(m):
-    x, a, b = map(int, input().split())
-    
-    if x == 0:
-        union(max((a,b)),min((a,b)))
-    
-    if x == 1:
+    x,a,b = map(int, input().split())
+    if x == 0: # 합집합 (유니온)
+        union(a,b)
+    if x == 1: # 부모 같은지 확인 (파인드)
         if find(a) == find(b):
             print('YES')
         else:
             print('NO')
-
-
