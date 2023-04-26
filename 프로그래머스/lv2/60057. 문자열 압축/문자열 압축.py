@@ -1,30 +1,28 @@
- 
-
 def solution(s):
-    result=[]
-    
-    if len(s)==1:
-        return 1
-    
-    for i in range(1, len(s)+1):
-        b = ''
-        cnt = 1
-        tmp=s[:i]
-
-        for j in range(i, len(s)+i, i):
-            
-            if tmp==s[j:i+j]:
-                cnt+=1
+    result = len(s)
+    for x in range(1, len(s)//2+1):        
+        cnt = 0
+        temp = ''
+        temp_check = 0
+        for i in range(0,len(s)//x):            
+            if s[x*i:x*(i+1)] != temp:
+                temp = s[x*i:x*(i+1)]
+                temp_check = 0
+                cnt += x
             else:
-                if cnt!=1:
-                    b = b + str(cnt)+tmp
+                if not temp_check:                    
+                    temp_check = 2
+                    cnt += 1
                 else:
-                    b = b + tmp
-                    
-                tmp=s[j:j+i]
-                cnt = 1
+                    cnt -= len(str(temp_check))
+                    temp_check += 1
+                    cnt += len(str(temp_check))
                 
-        result.append(len(b))
         
-
-    return min(result)
+        cnt += len(s) % x
+        if cnt < result:
+            result = cnt
+            
+    return result
+                
+   
