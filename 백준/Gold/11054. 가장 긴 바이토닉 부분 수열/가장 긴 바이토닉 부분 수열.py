@@ -1,24 +1,17 @@
 N = int(input())
 nums = list(map(int, input().split()))
-reverse = nums[::-1]
 
-increase, decrease  = [1 for _ in range(N)], [1 for _ in range(N)]
+inc, dec = [0]*N, [0]*N
 
-for i in range(N):
+for i in range(1, N):  
     for j in range(i):
         if nums[i] > nums[j]:
-            increase[i] = max(increase[i], increase[j]+1)
-        if reverse[i] > reverse[j]:
-            decrease[i] = max(decrease[i], decrease[j]+1)
-
-result = 0
-decrease = decrease[::-1]
+            inc[i] = max(inc[i], inc[j]+1)
+        if nums[N-i-1] > nums[N-j-1]:
+            dec[N-i-1] = max(dec[N-i-1], dec[N-j-1]+1)
+max_val = 0
 for i in range(N):
-    sum = increase[i] + decrease[i] - 1
-    if sum > result :
-        result = sum
+    if inc[i] + dec[i] > max_val:
+        max_val = inc[i] + dec[i] 
 
-print(result)
-
-
-
+print(max_val+1)
