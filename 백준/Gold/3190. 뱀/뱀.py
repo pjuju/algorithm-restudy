@@ -18,9 +18,6 @@ c_time.append((100001,'L'))
 # 상0 우1 하2 좌3
 dr, dc = [-1,0,1,0], [0,1,0,-1]
 
-
-result = 0
-
 def bfs():
     time, direction = 0,1    
     r,c = 0,0
@@ -51,7 +48,6 @@ def bfs():
             direction = (direction+1) % 4
 
 print(bfs())
- 
-#
+        
         
 
