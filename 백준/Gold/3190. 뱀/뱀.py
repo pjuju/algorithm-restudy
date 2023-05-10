@@ -51,6 +51,7 @@ def bfs():
             direction = (direction+1) % 4
 
 print(bfs())
-        
+ 
+#
         
 
