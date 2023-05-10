@@ -8,58 +8,49 @@ for _ in range(K):
     r,c = map(int, input().split())
     arr[r-1][c-1] = 1
 
-# 상0 우1 하2 좌3
-dr, dc = [-1,0,1,0], [0,1,0,-1]
-time, direction = 0,1
-
-dq = deque()
-dq.append((0,0))
-r,c = 0,0
-visited[r][c] = 1
-
-result = 0
+c_time = []
 L = int(input())
 for _ in range(L):
     X, C = input().split()
+    c_time.append((int(X), C))
+c_time.append((100001,'L'))
 
-    if result:
-        continue
+# 상0 우1 하2 좌3
+dr, dc = [-1,0,1,0], [0,1,0,-1]
+
+
+result = 0
+
+def bfs():
+    time, direction = 0,1    
+    r,c = 0,0
+    dq = deque()
+    dq.append((0,0))
+    visited[r][c] = 1
     
-    while time < int(X):
-        time += 1
-        r, c = r+dr[direction], c+dc[direction]
-        if not (0<=r<N and 0<=c<N) or visited[r][c]:
-            result = time
-            break
+    for X, C in c_time:        
+        while time < X:
+            time += 1
+            r, c = r+dr[direction], c+dc[direction]
+            if not (0<=r<N and 0<=c<N) or visited[r][c]:
+                return time
+                        
+            else:
+                if not arr[r][c]:
+                    pr,pc = dq.popleft()
+                    visited[pr][pc] = 0
+                arr[r][c] = 0
+                visited[r][c] = 1
+                dq.append((r,c))            
+                
+        if C == 'L':
+            direction -= 1
+            if direction < 0:
+                direction = 3
         else:
-            if not arr[r][c]:
-                pr,pc = dq.popleft()
-                visited[pr][pc] = 0
-            arr[r][c] = 0
-            visited[r][c] = 1
-            dq.append((r,c))
-            
-            
-    if C == 'L':
-        direction -= 1
-        if direction < 0:
-            direction = 3
-    else:
-        direction = (direction+1) % 4
+            direction = (direction+1) % 4
 
-while not result:
-    time += 1
-    r, c = r+dr[direction], c+dc[direction]
-    if not (0<=r<N and 0<=c<N) or visited[r][c]:
-        result = time
-        break
-    else:
-        if not arr[r][c]:
-            pr,pc = dq.popleft()
-            visited[pr][pc] = 0
-        arr[r][c] = 0
-        visited[r][c] = 1
-        dq.append((r,c))
-            
+print(bfs())
+        
+        
 
-print(result)
