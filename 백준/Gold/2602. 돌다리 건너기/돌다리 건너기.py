@@ -1,30 +1,20 @@
-import sys
-
-input = lambda: sys.stdin.readline().rstrip()
 target = input()
-s1 = input()
-s2 = input()
+text = [input() for _ in range(2)]
+dp = [[[0] * len(text[0]) for _ in range(len(target))] for _ in range(2)]
 
-dp = [[[0] * 2 for _ in range(len(target))] for _ in range(len(s1))]
+for x in range(2):
+    cnt = 0
+    for i in range(len(text[0])):
+        if target[0] == text[x][i]:
+            cnt += 1
+        dp[x][0][i] = cnt
 
-for i in range(len(s1)):
-    if s1[i] == target[0]:
-        dp[i][0][0] = 1
-    if s2[i] == target[0]:
-        dp[i][0][1] = 1
+for i in range(1, len(target)):
+    for case in range(2):
+        for j in range(1, len(text[0])):
+            dp[case][i][j] = dp[case][i][j-1]
+            if target[i] == text[case][j]:                
+                dp[case][i][j] += dp[(case+1)%2][i-1][j-1]
 
-for i in range(len(s1)):
-    for j in range(1, len(target)):
-        if s1[i] == target[j]:
-            for k in range(i):
-                dp[i][j][0] += dp[k][j-1][1]
-
-        if s2[i] == target[j]:
-            for k in range(i):
-                dp[i][j][1] += dp[k][j-1][0]
-
-answer = 0
-for i in range(len(s1)):
-    answer += (dp[i][len(target)-1][0] + dp[i][len(target)-1][1])
-
-print(answer)
+result = dp[0][-1][-1] + dp[1][-1][-1]    
+print(result)
