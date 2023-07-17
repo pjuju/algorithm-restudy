@@ -1,40 +1,35 @@
-s = input()
-
-sum_val = 0
+queue = []
+lst = list(input())
+result = 0
 val = 1
-queue = ''
-i = 0
-while i < len(s):
-    if s[i] == '(':
-        queue += s[i]
+for i in range(len(lst)):
+    a = lst[i]
+
+    if a == '(':
         val *= 2
-
-    elif s[i] == "[":
-        queue += s[i]
+        queue.append(a)
+    elif a == '[':
         val *= 3
-
-    elif s[i] == ')':
-        if not queue or queue[-1] == "[":
-            sum_val = 0
+        queue.append(a)
+    
+    elif a == ')':
+        if not queue or queue[-1] != '(':
+            result = 0
             break
-        if s[i-1] == "(":
-            sum_val += val
-        queue = queue[:-1]
-        val //= 2
+        if lst[i-1] == '(':
+            result += val    
+        queue.pop()
+        val //= 2        
 
-    else:
-        if not queue or queue[-1] == "(":
-            sum_val = 0
+    elif a == ']':
+        if not queue or queue[-1] != '[':
+            result = 0
             break
-        if s[i-1] == "[":
-            sum_val += val
-
-
-        queue = queue[:-1]
+        if lst[i-1] == '[':
+            result += val    
+        queue.pop()
         val //= 3
-    i += 1
 
-
-if queue != '':
-    sum_val = 0
-print(sum_val)
+if queue:
+    result = 0
+print(result)
