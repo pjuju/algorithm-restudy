@@ -1,28 +1,26 @@
+import sys
+input = sys.stdin.readline
+
 n = int(input())
 m = int(input())
-INF = 0xffffff
-distance = [[INF] * (n+1) for _ in range(n+1)]
+cost = [[float('inf')] * n for _ in range(n)]
+
+for i in range(n):
+    cost[i][i] = 0
+
 for _ in range(m):
     a,b,c = map(int, input().split())
-    if distance[a][b] > c:
-        distance[a][b] = c
+    cost[a-1][b-1] = min(c, cost[a-1][b-1])
 
+for k in range(n):
+    for i in range(n):
+        for j in range(n):
+            cost[i][j] = min(cost[i][j], cost[i][k] + cost[k][j])
 
-for i in range(1, n+1): # 징검다리
-    for j in range(1, n+1): # 출발
-        for k in range(1, n+1): # 도착
-            if j != k:
-                if distance[j][k] > distance[j][i] + distance[i][k]:
-                    distance[j][k] = distance[j][i] + distance[i][k]
-
-for i in range(1, n+1):
-    for j in range(1, n+1):
-        if distance[i][j] == INF:
-            print(0, end=' ')
+for i in range(n):
+    for j in range(n):
+        if cost[i][j] == float('inf'):
+            print(0, end =' ')
         else:
-            print(distance[i][j], end=' ')
+            print(cost[i][j], end = ' ')
     print()
-
-
-
-
