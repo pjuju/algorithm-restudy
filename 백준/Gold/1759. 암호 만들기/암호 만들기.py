@@ -1,29 +1,23 @@
-from collections import deque
+import sys
+input = sys.stdin.readline
 
-L,C = map(int, input().split())
-lst = sorted(input().split())
+L, C = map(int, input().split())
+lst = list(input().split())
 
-dq = deque()
-dq.append(('', -1))
+lst.sort()
 
-while dq:
-    text, idx = dq.popleft()
-        
+def dfs(text,x,a,b):
+    if a+b+C-x-1 < L:
+        return
     if len(text) == L:
-        a,b = 0,0
-        for t in text:
-            if t in ['a','e','i','o','u']:
-                a += 1
-            else:
-                b += 1
-                
-        if a > 0 and b > 1:
-            print(''.join(text))
-        continue
-    
-    for i in range(idx+1, C-L+len(text)+1):
-        dq.append((text+lst[i], i))
-    
-    
-    
+        if a >= 1 and b >= 2:
+            print(text) 
+            return
+    for i in range(x+1, C):
+        if lst[i] in 'aeiou':
+            dfs(text+lst[i],i,a+1,b)
+        else:
+            dfs(text+lst[i],i,a,b+1)  
+            
+dfs('',-1,0,0)  
     
