@@ -13,7 +13,7 @@ func(-1,0,0)
 lst = sorted(list(set(lst)))
 
 prime_list = [0] * (max(lst)+1)
-for i in range(2, max(lst)//2+1):
+for i in range(2, int(max(lst)**0.5)+1):
     for j in range(2, max(lst)//i+1):
         prime_list[i*j] = 1
 
