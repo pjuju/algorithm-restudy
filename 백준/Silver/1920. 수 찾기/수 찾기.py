@@ -1,31 +1,24 @@
-def find(x):
-    start = 0
-    end = N-1
-    
-    
-    while start <= end:
-        middle = (start+end)//2
-        
-        if lst[middle] == x:
-            print('1')
-            return
-        
-        elif lst[middle] > x:
-            end = middle-1
-            
+import sys
+input = sys.stdin.readline
+
+def func(x):
+    s, e = 0, N-1
+    while s <= e:
+        mid = (s+e)//2
+        if nums[mid] == x:
+            return 1
+        elif nums[mid] > x:
+            e = mid-1
         else:
-            start = middle+1
-        
-    print('0')            
+            s = mid+1
+    return 0
+
 
 
 N = int(input())
-lst = sorted(list(map(int, input().split())))
+nums = sorted(list(map(int, input().split())))
+
 M = int(input())
-nums = list(map(int, input().split()))
-
-for num in nums:
-    find(num)
-    
-
-
+lst = list(map(int, input().split()))
+for a in lst:
+    print(func(a))
