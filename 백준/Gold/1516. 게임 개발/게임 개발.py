@@ -1,41 +1,31 @@
 import sys
 input = sys.stdin.readline
-from collections import deque
+import heapq
+
 N = int(input())
-times = [0] * (N+1)
-cnt = [0] * (N+1)
-graph = [[] for i in range(N+1)]
-pre_graph = [[]]
-for i in range(1,N+1):
-    arr = list(map(int, input().split()))[:-1]
-    time = arr.pop(0)
-    times[i] = time
-    pre_graph.append(arr)
-    for x in arr:
-        # print(arr, x, i)
-        graph[x].append(i)
-        cnt[i] += 1
+graph = [[] for _ in range(N)]
+cnt = [0] * N
+time = [0] * N
 
-results = [0] * (N+1)
-queue = deque()
-for x in range(1, N+1):
-    if cnt[x] == 0:
-        queue.append(x)
+for i in range(N):
+    lst = list(map(int, input().split()))
+    time[i] = lst[0]
+    cnt[i] += (len(lst)-2)
+    for x in range(1, len(lst)-1):
+        graph[lst[x]-1].append(i)
+        
+hq = []
+for i in range(N):
+    if cnt[i] == 0:
+        heapq.heappush(hq, (time[i], i))
 
-# print(graph)
-while queue:
-    now = queue.popleft()
-    max_pre = 0
-    for x in graph[now]:
-        cnt[x] -= 1
-        if cnt[x] == 0:
-            queue.append(x)
-    for y in pre_graph[now]:
-        if results[y] > max_pre:
-            max_pre = results[y]
-    result = max_pre + times[now]
-    results[now] = result
+while hq:
+    t, now = heapq.heappop(hq)
+    time[now] = t
+    for next in graph[now]:
+        cnt[next] -= 1
+        if cnt[next] == 0:
+            heapq.heappush(hq, (t+time[next], next))
 
-results.pop(0)
-for result in results:
-    print(result)      
+for x in time:
+    print(x)
