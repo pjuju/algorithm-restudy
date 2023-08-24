@@ -1,26 +1,34 @@
-from collections import deque
 import sys
+from collections import deque
 input = sys.stdin.readline
 
-n, m = map(int, input().split())   # n: 기차 수, m: 명령 수
-order = list(tuple(map(int, input().split())) for _ in range(m))
+N, M = map(int, input().split())
+train = [deque([0] * 20) for _ in range(N)] # 1번 인덱스는 첫 좌석
 
-train = [deque(0 for _ in range(20)) for _ in range(n)]
-for i in range(m):
-  if order[i][0] == 1:
-    train[order[i][1]-1][order[i][2]-1] = 1
-  elif order[i][0] == 2:
-    train[order[i][1]-1][order[i][2]-1] = 0
-  elif order[i][0] == 3:
-    train[order[i][1]-1].rotate(1)
-    train[order[i][1]-1][0] = 0
-  else:
-      train[order[i][1]-1].rotate(-1)
-      train[order[i][1]-1][-1] = 0
+for _ in range(M):      
+    command = list(map(int, input().split()))
 
-output_train = []
-for i in range(n):
-  if train[i] not in output_train:
-    output_train.append(train[i])
+    if command[0] == 1:
+        i, x = command[1]-1, command[2]-1
+        train[i][x] = 1
 
-print(len(output_train))
+    elif command[0] == 2:
+        i, x = command[1]-1, command[2]-1
+        train[i][x] = 0
+
+    elif command[0] == 3: # 뒷칸으로 당기면 pop하고 앞에 [0] 추가
+        i = command[1]-1
+        train[i].pop() #
+        train[i].appendleft(0)
+
+    else: # 앞으로 당기면 popleft 하고 뒤에 [0] 추가
+        i = command[1]-1
+        train[i].popleft() #
+        train[i].append(0)
+
+result = []
+for t in train:
+    if t not in result:
+        result.append(t)
+
+print(len(result))
