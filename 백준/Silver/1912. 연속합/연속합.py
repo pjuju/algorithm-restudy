@@ -1,11 +1,14 @@
-N = int(input())
-nums = list(map(int, input().split()))
-if N == 1:
-    print(nums[0])
+n = int(input())
+lst = list(map(int, input().split()))
 
-else:
-    for i in range(1, N):
-        if nums[i-1] > 0:
-            nums[i] += nums[i-1]
+result = -1000
+val = 0
 
-    print(max(nums))
+for i in range(n):
+    val += lst[i]
+    if val > result:
+        result = val
+    if val < 0:
+        val = 0
+
+print(result)
