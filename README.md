@@ -1,3 +1,2 @@
-# algorithm-restudy
-## 알고리즘 문제 풀이 Repository
+# 알고리즘 재활 운동
 [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
