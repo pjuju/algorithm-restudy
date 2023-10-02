@@ -1,24 +1,29 @@
-N, M = map(int, input().split())
+import sys
+input = sys.stdin.readline
 
-graph = [[] for _ in range(N+1)]
-visited = [0] * (N+1)
-result = 0
+N, M = map(int, input().split())
+parents = [i for i in range(N+1)]
+
+def find(x):
+    if x == parents[x]:
+        return x
+    
+    parents[x] = find(parents[x])
+    return parents[x]
+
+def union(a,b):
+    if a > b:
+        a,b = b,a
+    
+    pa, pb = find(a), find(b)
+    parents[pb] = pa
 
 for _ in range(M):
-    u,v = map(int, input().split())
-    graph[u].append(v)
-    graph[v].append(u)
-    
-def dfs(node):
-    for next in graph[node]:
-        if not visited[next]:
-            visited[next] = 1
-            dfs(next)
-            
+    a,b = map(int, input().split())
+    union(a,b)
+
+_set = set()
 for i in range(1, N+1):
-    if not visited[i]:
-        visited[i] = 1
-        result += 1
-        dfs(i)
-        
-print(result)
+    _set.add(find(i))
+
+print(len(_set))
