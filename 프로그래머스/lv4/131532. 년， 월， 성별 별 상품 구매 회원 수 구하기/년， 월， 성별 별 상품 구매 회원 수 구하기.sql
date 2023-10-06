@@ -1,14 +1,9 @@
--- 코드를 입력하세요
-SELECT YEAR(os.SALES_DATE) as YEAR,	MONTH(os.SALES_DATE) as MONTH, ui.GENDER as GENDER, COUNT(DISTINCT os.USER_ID) AS USERS
-FROM ONLINE_SALE as os
-LEFT JOIN USER_INFO as ui
-ON ui.USER_ID = os.USER_ID
-WHERE GENDER is not NULL
-GROUP BY YEAR, MONTH, GENDER 
-ORDER BY YEAR, MONTH, GENDER
+select YEAR(sale.sales_date) as y, MONTH(sale.sales_date) as m, us.gender as g, count(distinct(us.user_id)) as users
+from online_sale as sale
+left join user_info as us
+on us.user_id = sale.user_id
+where us.gender is not null
+group by y,m,g
+order by y,m,g
 
-# SELECT *, COUNT(*) AS USERS
-# FROM ONLINE_SALE as os
-# LEFT JOIN USER_INFO as ui
-# ON ui.USER_ID = os.USER_ID
-# GROUP BY os.sales_date, ui.gender
+# select * from online_sale order by sales_date
