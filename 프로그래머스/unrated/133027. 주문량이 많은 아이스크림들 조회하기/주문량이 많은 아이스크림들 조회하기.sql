@@ -1,10 +1,7 @@
--- 코드를 입력하세요
-SELECT FLAVOR
-FROM (SELECT *
-FROM FIRST_HALF 
-UNION ALL
-SELECT *
-FROM JULY) as sale
-GROUP BY FLAVOR
-ORDER BY sum(total_order) DESC LIMIT 3
-;
+SELECT flavor FROM (SELECT * FROM FIRST_HALF
+                        UNION ALL
+                        SELECT * FROM JULY) as t
+group by flavor
+order by sum(total_order) desc limit 3
+
+
