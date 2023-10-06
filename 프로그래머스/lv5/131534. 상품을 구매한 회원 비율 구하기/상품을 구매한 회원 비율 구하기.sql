@@ -1,12 +1,16 @@
-    SELECT YEAR, MONTH, COUNT(*), ROUND(COUNT(*)/(SELECT COUNT(*)
-                                                 FROM USER_INFO
-                                                 WHERE YEAR(JOINED) = '2021'),1)
-    
-    FROM (
-        SELECT DISTINCT YEAR(S.SALES_DATE) AS YEAR, MONTH(S.SALES_DATE) AS MONTH, U.USER_ID
-        FROM ONLINE_SALE S
-        JOIN USER_INFO U ON S.USER_ID = U.USER_ID AND YEAR(U.JOINED) = '2021'
-        ) AS A
-    
-    GROUP BY YEAR, MONTH
-    ORDER BY YEAR, MONTH
+set @entire_cnt = 0;
+
+select count(*) into @entire_cnt
+from user_info
+where YEAR(joined) = '2021';
+            
+
+
+select YEAR(sales_date) as YEAR, MONTH(sales_date) as MONTH, COUNT(DISTINCT(user_id)) as PUCHASED_USERS, ROUND(COUNT(DISTINCT(user_id))/@entire_cnt, 1) as PUCHASED_RATIO
+from online_sale
+where user_id in (
+    select user_id
+    from user_info
+    where YEAR(joined) = '2021')
+group by YEAR, MONTH
+order by YEAR,MONTH
