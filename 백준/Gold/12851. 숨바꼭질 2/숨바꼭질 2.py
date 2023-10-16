@@ -3,28 +3,33 @@ N, K = map(int, input().split())
 from collections import deque
 
 dq = deque()
-visit = [0] * (100001)
-visit[N] = 0
+costs = [float('inf')] * (100001)
+cnts = [0] * (100001)
+costs[N] = 0
+cnts[N] = 1
 
-dq.append((N,0))
+visit_set = set()
 
-result = 0
-result_cnt = 0
+dq.append(N)
+visit_set.add(N)
 
 while dq:
-    now, cnt = dq.popleft()
+    now = dq.popleft()
+
     if now == K:
-        result = cnt
-        result_cnt += 1
-        continue
+        print(costs[now])
+        print(cnts[now])
+        break
 
     for next in (2*now, now+1, now-1):
         if 0<=next<=100000:
-            if not visit[next] or visit[next] == cnt+1:
-                visit[next] = cnt+1
-                dq.append((next, cnt+1))
+            if costs[next] >= costs[now] + 1:
+                costs[next] = costs[now] + 1
+                cnts[next] += cnts[now]
+            if next not in visit_set:
+                visit_set.add(next)
+                dq.append(next)
     
-print(result)
-print(result_cnt)
+
 
 
